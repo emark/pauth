@@ -5,6 +5,7 @@ use integer;
 use CGI;
 use DBIx::Custom;
 use Net::ARP;
+use HTML::Template;
 use YAML::XS 'LoadFile';
 
 my $config = LoadFile('config.yaml');
@@ -19,7 +20,7 @@ my $dbi = DBIx::Custom->connect(
 my $q = CGI->new();
 my $params = $q->Vars;
 
-print $q->header(-charset => 'utf-8');
+my $tpl = HTML::Template->new(arrayref => 'tpl/index.tpl');
 
 if($params->{phone} && $params->{code}){
 	&verify;
@@ -29,12 +30,10 @@ if($params->{phone} && $params->{code}){
 	&index;
 };
 
-sub index(){
-	print '<form action="" method="post">';
-    print '+7 <input type=text size=10 name="phone"><br/>';
-    print '<input type=submit value="Далее">';
-    print '</form>';
+print "Content-Type: text/html\n\n", $tpl->output;
 
+sub index(){
+	$tpl->filename('tpl/index2.tpl');
 };
 
 sub register(){

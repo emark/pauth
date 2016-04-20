@@ -25,23 +25,22 @@
 	  <div class="container">
     
     <h1>Регистрация в сети беспроводного доступа</h1>
-		<p>Введите номер телефона для отправки SMS сообщения для регистрации доступа в интернет.</p>
-		
+    <p>Сообщение с кодом регистрации отправлено на номер <TMPL_VAR NAME="phone">.</p>
+    
     <form action="" method="post">
-    	
+  		
   		<div class="form-group">
-  			<label for="InputPhone">Номер телефона</label>
+  			<label for="InputCode">Код регистрации</label>
+  			
   			<div class="row">
 					<div class="col-sm-2">
-			    <input type="phone" class="form-control" id="InputPhone" placeholder="" name="phone">
-				  </div>
-				 </div>
+	  			<input type="text" class="form-control" id="InputCode" placeholder="" name="code" value="<TMPL_VAR NAME="code">">
+	  			</div>
+	  		</div>
 	  		
-	  		<p class="help-block">Пример: 89082087328</p>
   		</div>
   		<button type="submit" class="btn btn-default">Далее</button>
-  		<input type="hidden" name="tpl" value="register">
-
+  		<input type="hidden" name="phone" value="<TMPL_VAR NAME="phone">">
 		</form>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

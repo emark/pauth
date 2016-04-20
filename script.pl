@@ -20,24 +20,32 @@ my $dbi = DBIx::Custom->connect(
 my $q = CGI->new();
 my $params = $q->Vars;
 
-my $tpl = HTML::Template->new(arrayref => 'tpl/index.tpl');
+my $template = 'index';
+my $func = \&index;
 
 if($params->{phone} && $params->{code}){
-	&verify;
+	$template = 'verify';
+	$func = \&verify;
+
 }elsif($params->{phone}){
-	&register;
+	$template = 'register';
+	$func = \&register;
+
 }else{
 	&index;
+
 };
 
+my $tpl = HTML::Template->new(filename => 'tpl/'.$template.'.tpl');
+&$func();
 print "Content-Type: text/html\n\n", $tpl->output;
 
 sub index(){
-	$tpl->filename('tpl/index2.tpl');
+
 };
 
 sub register(){
-	my $code = 0;
+	my $code = 0; # Generate sms code
 	while ($code < 100000){
 		$code = int(rand(999999));
 	};	
@@ -51,25 +59,23 @@ sub register(){
 		ctime => 'cdate',
 		table => 'clients',
 	);
-
-    print $q->p("Phone: +7$params->{phone}");
-    print $q->p("Insert code in field below: <b>$code</b>");
-    print '<form action="" method="post">';
-	print "<input type=hidden name=\"phone\" value=\"$params->{phone}\">";
-    print '<input type=text size=6 name="code"><br/>';
-    print '<input type=submit value="Далее">';
-    print '</form>';
-
+	
+	$tpl->param(
+		code => $code,
+		phone => $params->{phone},
+	);
 };
 
 sub verify(){
+	my $msg = '';
+
 	my $verify = $dbi->select(
 		table => 'clients',
-		columns => ['id,','code','ip'],
+		columns => ['id,','code','ip','mac'],
 		where => {phone => $params->{phone}},
 	)->fetch_hash;
 
-	if($verify->{code} eq $params->{code}){
+	if(($verify->{code} eq $params->{code})){
 		my $mac = Net::ARP::arp_lookup($config->{dev},$verify->{ip});
 		if ($mac ne 'unknown'){
 			$dbi->update(
@@ -77,14 +83,16 @@ sub verify(){
 				table => 'clients',
 				where => {id => $verify->{id}},	
 			);
-			print $q->h1("That's ok! MAC: $mac");
+			$msg = "Регистрация прошла успешно. В течение 5 минут будет организован доступ в интернет.";
 		
 		}else{
-			print 'Error define mac-address';
+			$msg = 'Ошибка в определении сетевого адреса устройства.';
 
 		};
 	}else{
-		print $q->p("Wrong code $verify->{code}/$params->{code}, please register.");
+		$msg = "Код регистрации введен неверно. Повторите ввод."; 
+		$tpl->param(phone => $params->{phone});
 	}
 
+	$tpl->param(msg => $msg);
 };

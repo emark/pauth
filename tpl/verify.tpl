@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Registration</title>
+    <title>Регистрация в сети беспроводного доступа</title>
 
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
@@ -24,17 +24,27 @@
   <body>
 	  <div class="container">
     
-    <h1>Registration 2222222</h1>
-    <form action="" method="post" class="form-inline">
+    <h1>Регистрация в сети беспроводного доступа</h1>
+    <p><TMPL_VAR NAME="msg"></p>
+    
+    <TMPL_IF NAME="phone">
+     <form action="" method="post">
   		
   		<div class="form-group">
-  			<label for="InputPhone">Phone number +7</label>
-	  		<input type="phone" class="form-control" id="InputPhone" placeholder="">
+  			<label for="InputCode">Код регистрации</label>
+  			
+  			<div class="row">
+					<div class="col-sm-2">
+	  			<input type="text" class="form-control" id="InputCode" placeholder="" name="code" value="<TMPL_VAR NAME="code">">
+	  			</div>
+	  		</div>
+	  		
   		</div>
   		<button type="submit" class="btn btn-default">Далее</button>
-  		
+  		<input type="hidden" name="phone" value="<TMPL_VAR NAME="phone">">
 		</form>
-
+		</TMPL_IF>
+		
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

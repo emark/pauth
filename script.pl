@@ -20,16 +20,18 @@ my $dbi = DBIx::Custom->connect(
 my $q = CGI->new();
 my $params = $q->Vars;
 
-my $template = 'index';
-my $func = \&index;
+my $template = 'index'; #Default template name
+my %route = (
+			'index' => \&index,
+			'register' => \&register,
+			'verify' => \&verify,
+			);
 
 if($params->{phone} && $params->{code}){
 	$template = 'verify';
-	$func = \&verify;
 
 }elsif($params->{phone}){
 	$template = 'register';
-	$func = \&register;
 
 }else{
 	&index;
@@ -37,7 +39,10 @@ if($params->{phone} && $params->{code}){
 };
 
 my $tpl = HTML::Template->new(filename => 'tpl/'.$template.'.tpl');
+
+my $func = $route{$template};
 &$func();
+
 print "Content-Type: text/html\n\n", $tpl->output;
 
 sub index(){

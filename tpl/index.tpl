@@ -25,7 +25,7 @@
 	  <div class="container">
     
     <h1>Регистрация в сети беспроводного доступа</h1>
-		<p>Введите номер телефона для отправки SMS сообщения для регистрации доступа в интернет.</p>
+		<p>Введите номер телефона для отправки SMS сообщения о регистрации доступа в интернет.</p>
 		
     <form action="" method="post">
     	
@@ -33,11 +33,14 @@
   			<label for="InputPhone">Номер телефона</label>
   			<div class="row">
 					<div class="col-sm-2">
-			    <input type="phone" class="form-control" id="InputPhone" placeholder="" name="phone">
+						<div class="input-group">
+						<span class="input-group-addon">+7</span>
+			    	<input type="tel" class="form-control" id="InputPhone" placeholder="" name="phone">
+			    	</div>
 				  </div>
 				 </div>
 	  		
-	  		<p class="help-block">Пример: 89082087328</p>
+	  		<p class="help-block">Пример: 9082093223</p>
   		</div>
   		<button type="submit" class="btn btn-default">Далее</button>
   		<input type="hidden" name="tpl" value="register">

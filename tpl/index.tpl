@@ -25,14 +25,14 @@
 	  <div class="container">
     
     <h1>Регистрация в сети беспроводного доступа</h1>
-		<p>Введите номер телефона для отправки SMS сообщения о регистрации доступа в интернет.</p>
+    <p><TMPL_VAR NAME="msg"></p>
 		
     <form action="" method="post">
     	
   		<div class="form-group">
   			<label for="InputPhone">Номер телефона</label>
   			<div class="row">
-					<div class="col-sm-2">
+					<div class="col-sm-4">
 						<div class="input-group">
 						<span class="input-group-addon">+7</span>
 			    	<input type="tel" class="form-control" id="InputPhone" placeholder="" name="phone">

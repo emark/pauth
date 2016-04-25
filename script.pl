@@ -20,6 +20,9 @@ my $dbi = DBIx::Custom->connect(
 my $q = CGI->new();
 my $params = $q->Vars;
 
+my $remote_ip = $ENV{REMOTE_ADDR}; #Client remote address
+
+my $msg = '';
 my $template = 'index'; #Default template name
 my %route = (
 			'index' => \&index,
@@ -33,10 +36,10 @@ if($params->{phone} && $params->{code}){
 }elsif($params->{phone}){
 	$template = 'register' if &phone_check();
 
-}else{
-	&index;
+};#else{
+#	&index;
 
-};
+#};
 
 my $tpl = HTML::Template->new(filename => 'tpl/'.$template.'.tpl');
 
@@ -47,10 +50,18 @@ print "Content-Type: text/html\n\n", $tpl->output;
 
 sub phone_check(){
 	my $phone = $params->{phone};
-	return 1 if($phone=~m/^\d{10}$/);
+	return 1 if($phone=~m/^\d{10}$/); #Check for 10 digits in phone nu,ber
+
 };
 
 sub index(){
+	$msg = 'Введите номер телефона для отправки SMS сообщения о регистрации доступа в интернет.';
+	
+	if($params->{phone}){
+		$msg = 'Ошибка. Укажите номер мобильного телефона. Не более 10 цифр.';
+
+	};
+	$tpl->param(msg => $msg);
 
 };
 
@@ -59,26 +70,41 @@ sub register(){
 	while ($code < 100000){
 		$code = int(rand(999999));
 	};	
-
-	$dbi->insert(
-		{
-			phone => $params->{phone},
-			ip => $ENV{REMOTE_ADDR},
-			code => $code,
-		},
-		ctime => 'cdate',
+	my $phone = $params->{phone};
+	my $client = $dbi->select(
 		table => 'clients',
-	);
+		column => ['id'],
+		where => {phone => $phone, ip => $remote_ip},
+	)->value;
+
+	if(!$client){ #Create new registration
+		$dbi->insert(
+			{
+				phone => $phone,
+				ip => $remote_ip,
+				code => $code,
+			},
+			ctime => 'cdate',
+			table => 'clients',
+		);
+		#Send registration code via SMS
+
+		$msg = "Сообщение с кодом регистрации отправлено на номер +7$phone";
+
+	}else{
+		$msg = 'Ваше устройство уже зарегистрировано или ожидается код подтверждения.';
+		$phone = '';
+	};
 	
 	$tpl->param(
+		msg => $msg,
 		code => $code,
-		phone => $params->{phone},
+		phone => $phone,
 	);
+
 };
 
 sub verify(){
-	my $msg = '';
-
 	my $verify = $dbi->select(
 		table => 'clients',
 		columns => ['id,','code','ip','mac'],
@@ -87,7 +113,7 @@ sub verify(){
 
 	if(($verify->{code} eq $params->{code})){
 		my $mac = Net::ARP::arp_lookup($config->{dev},$verify->{ip});
-		if ($mac ne 'unknown'){
+		if ($mac ne 'unknown' && $mac ne $verify->{mac}){
 			$dbi->update(
 				{mac => $mac},
 				table => 'clients',

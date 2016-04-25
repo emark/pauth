@@ -25,15 +25,16 @@
 	  <div class="container">
     
     <h1>Регистрация в сети беспроводного доступа</h1>
-    <p>Сообщение с кодом регистрации отправлено на номер +7<TMPL_VAR NAME="phone">.</p>
-    
+		<p><TMPL_VAR NAME="msg"></p>
+
+		<TMPL_IF NAME="phone">
     <form action="" method="post">
   		
   		<div class="form-group">
   			<label for="InputCode">Код регистрации</label>
   			
   			<div class="row">
-					<div class="col-sm-2">
+					<div class="col-sm-4">
 	  			<input type="number" class="form-control" id="InputCode" placeholder="" name="code" value="<TMPL_VAR NAME="code">">
 	  			</div>
 	  		</div>
@@ -42,7 +43,8 @@
   		<button type="submit" class="btn btn-default">Далее</button>
   		<input type="hidden" name="phone" value="<TMPL_VAR NAME="phone">">
 		</form>
-
+		</TMPL_IF>
+	
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

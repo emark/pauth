@@ -31,7 +31,7 @@ if($params->{phone} && $params->{code}){
 	$template = 'verify';
 
 }elsif($params->{phone}){
-	$template = 'register';
+	$template = 'register' if &phone_check();
 
 }else{
 	&index;
@@ -44,6 +44,11 @@ my $func = $route{$template};
 &$func();
 
 print "Content-Type: text/html\n\n", $tpl->output;
+
+sub phone_check(){
+	my $phone = $params->{phone};
+	return 1 if($phone=~m/^\d{10}$/);
+};
 
 sub index(){
 

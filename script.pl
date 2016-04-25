@@ -36,10 +36,7 @@ if($params->{phone} && $params->{code}){
 }elsif($params->{phone}){
 	$template = 'register' if &phone_check();
 
-};#else{
-#	&index;
-
-#};
+};
 
 my $tpl = HTML::Template->new(filename => 'tpl/'.$template.'.tpl');
 
@@ -47,6 +44,7 @@ my $func = $route{$template};
 &$func();
 
 print "Content-Type: text/html\n\n", $tpl->output;
+
 
 sub phone_check(){
 	my $phone = $params->{phone};
@@ -88,12 +86,11 @@ sub register(){
 			table => 'clients',
 		);
 		#Send registration code via SMS
-
 		$msg = "Сообщение с кодом регистрации отправлено на номер +7$phone";
 
 	}else{
 		$msg = 'Ваше устройство уже зарегистрировано или ожидается код подтверждения.';
-		$phone = '';
+		
 	};
 	
 	$tpl->param(
@@ -108,7 +105,7 @@ sub verify(){
 	my $verify = $dbi->select(
 		table => 'clients',
 		columns => ['id,','code','ip','mac'],
-		where => {phone => $params->{phone}},
+		where => {phone => $params->{phone}, ip => $remote_ip},
 	)->fetch_hash;
 
 	if(($verify->{code} eq $params->{code})){

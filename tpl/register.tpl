@@ -27,7 +27,6 @@
     <h1>Регистрация в сети беспроводного доступа</h1>
 		<p><TMPL_VAR NAME="msg"></p>
 
-		<TMPL_IF NAME="phone">
     <form action="" method="post">
   		
   		<div class="form-group">
@@ -43,7 +42,6 @@
   		<button type="submit" class="btn btn-default">Далее</button>
   		<input type="hidden" name="phone" value="<TMPL_VAR NAME="phone">">
 		</form>
-		</TMPL_IF>
 	
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

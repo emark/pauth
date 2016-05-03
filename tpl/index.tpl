@@ -42,6 +42,12 @@
 	  		
 	  		<p class="help-block">Пример: 9082093223</p>
   		</div>
+  		<div class="checkbox">
+		    <label>
+  	    <input type="checkbox" name="user_agreement"> Я принимаю условия <a href="/doc/user-agreement.html" target=_blank>"Пользовательского соглашения"</a>
+  	  	</label>
+  		</div>
+  		
   		<button type="submit" class="btn btn-default">Далее</button>
   		<input type="hidden" name="tpl" value="register">
 

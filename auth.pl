@@ -1,4 +1,5 @@
 #!/usr/bin/perl -w
+#Web-authorisation script
 
 use strict;
 use integer;
@@ -48,12 +49,12 @@ print "Content-Type: text/html\n\n", $tpl->output;
 
 sub phone_check(){
 	my $phone = $params->{phone};
-	return 1 if($phone=~m/^\d{10}$/); #Check for 10 digits in phone nu,ber
+	return 1 if($phone=~m/^\d{10}$/); #Check for 10 digits in phone number
 
 };
 
 sub index(){
-	$msg = 'Введите номер телефона для отправки SMS сообщения о регистрации доступа в интернет.';
+	$msg = 'Введите номер телефона для отправки SMS сообщения о регистрации доступа в интернет. Доступ предоставляется только на одно устройство.';
 	
 	if($params->{phone}){
 		$msg = 'Ошибка. Укажите номер мобильного телефона. Не более 10 цифр.';
@@ -68,6 +69,14 @@ sub register(){
 	while ($code < 100000){
 		$code = int(rand(999999));
 	};	
+	
+	my $token = ''; #Token uses for identification clients id
+	my @dict = (0..9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+
+	for (my $i=0; $i<30; $i++){
+    	$token = $token.$dict[rand(61)];
+    };
+
 	my $phone = $params->{phone};
 	my $client = $dbi->select(
 		table => 'clients',
@@ -81,11 +90,21 @@ sub register(){
 				phone => $phone,
 				ip => $remote_ip,
 				code => $code,
+				token => $token,
 			},
 			ctime => 'cdate',
 			table => 'clients',
 		);
+		
 		#Send registration code via SMS
+		#Add queue
+		$dbi->insert(
+			{
+				token => $token,
+			},
+			table => 'notify_q',
+		);
+
 		$msg = "Сообщение с кодом регистрации отправлено на номер +7$phone";
 
 	}else{

@@ -6,7 +6,6 @@ use DBIx::Custom;
 use Mojo::UserAgent;
 use YAML::XS 'LoadFile';
 use FindBin qw($Bin);
-use Data::Dumper;
 use integer;
 
 my $config = LoadFile($Bin.'/../config.yaml');

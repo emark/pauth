@@ -32,20 +32,20 @@ sub get_queue(){
 	)->flat;
 
 	#Get recipients for sendind sms
-	my $recipients = $dbi->select(
+	my $rcpts = $dbi->select(
 		table => 'clients',
 		column => ['phone','code','token'],
 		where => {token => \@tokens},
 	)->fetch_hash_all;
 	
 	#Send sms via sms-gate, write result to database
-	foreach my $recipient (@{$recipients}){
-		$result = &send_sms($recipient->{phone},$recipient->{code});
+	foreach my $rcpt (@{$rcpts}){
+		$result = &send_sms($rcpt->{phone},$rcpt->{code});
 	
 		$dbi->update(
 			{result => $result},
 			table => 'notify_q',
-			where => {token => $recipient->{token}},
+			where => {token => $rcpt->{token}},
 		);
 	};
 

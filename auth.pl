@@ -23,7 +23,7 @@ my $params = $q->Vars;
 
 my $remote_ip = $ENV{REMOTE_ADDR}; #Client remote address
 
-my $msg = '';
+my $msg = ''; #Help message for templates
 my $template = 'index'; #Default template name
 my %route = (
 			'index' => \&index,
@@ -135,6 +135,13 @@ sub verify(){
 				table => 'clients',
 				where => {id => $verify->{id}},	
 			);
+	
+			#Create queue for rules
+			$dbi->insert(
+				{cid => $verify->{id}},
+				table => 'rules_q',
+			);
+
 			$msg = "Регистрация прошла успешно. В течение 5 минут будет организован доступ в интернет.";
 		
 		}else{

@@ -114,7 +114,6 @@ sub register(){
 	
 	$tpl->param(
 		msg => $msg,
-		code => $code,
 		phone => $phone,
 	);
 

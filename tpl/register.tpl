@@ -34,7 +34,7 @@
   			
   			<div class="row">
 					<div class="col-sm-4">
-	  			<input type="number" class="form-control" id="InputCode" placeholder="" name="code" value="<TMPL_VAR NAME="code">">
+	  			<input type="number" class="form-control" id="InputCode" placeholder="" name="code" value="">
 	  			</div>
 	  		</div>
 	  		

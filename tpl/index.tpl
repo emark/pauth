@@ -44,7 +44,7 @@
   		</div>
   		<div class="checkbox">
 		    <label>
-  	    <input type="checkbox" name="user_agreement"> Я принимаю условия <a href="/doc/user-agreement.html" target=_blank>"Пользовательского соглашения"</a>
+  	    <input type="checkbox" name="user_agreement"> Я принимаю условия <a href="/public/ua.html" target=_blank>"Пользовательского соглашения"</a>
   	  	</label>
   		</div>
   		

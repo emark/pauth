@@ -25,17 +25,17 @@
 	  <div class="container">
     
     <h1>Регистрация в сети беспроводного доступа</h1>
-    <p><TMPL_VAR NAME="msg"></p>
+    <div class="well"><TMPL_VAR NAME="msg"></div>
 		
     <form action="" method="post">
     	
   		<div class="form-group">
   			<label for="InputPhone">Номер телефона</label>
   			<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-3 col-xs-8">
 						<div class="input-group">
 						<span class="input-group-addon">+7</span>
-			    	<input type="tel" class="form-control" id="InputPhone" placeholder="" name="phone">
+			    	<input type="tel" class="form-control input-lg" id="InputPhone" placeholder="" name="phone">
 			    	</div>
 				  </div>
 				 </div>
@@ -43,7 +43,7 @@
 	  		<p class="help-block">Пример: 9082093223</p>
   		</div>
   	
-  		<button type="submit" class="btn btn-default">Далее</button>
+  		<button type="submit" class="btn btn-default btn-lg">Далее</button>
   		<input type="hidden" name="tpl" value="register">
 
 		</form>

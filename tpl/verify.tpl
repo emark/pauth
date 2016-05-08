@@ -25,7 +25,7 @@
 	  <div class="container">
     
     <h1>Регистрация в сети беспроводного доступа</h1>
-    <p><TMPL_VAR NAME="msg"></p>
+    <div class="well"><TMPL_VAR NAME="msg"></div>
     
     <TMPL_IF NAME="phone">
      <form action="" method="post">
@@ -34,13 +34,13 @@
   			<label for="InputCode">Код регистрации</label>
   			
   			<div class="row">
-					<div class="col-sm-4">
-	  			<input type="number" class="form-control" id="InputCode" placeholder="" name="code" value="<TMPL_VAR NAME="code">">
+					<div class="col-sm-2 col-xs-6">
+	  			<input type="number" class="form-control input-lg" id="InputCode" placeholder="" name="code" value="<TMPL_VAR NAME="code">">
 	  			</div>
 	  		</div>
 	  		
   		</div>
-  		<button type="submit" class="btn btn-default">Далее</button>
+  		<button type="submit" class="btn btn-default btn-lg">Далее</button>
   		<input type="hidden" name="phone" value="<TMPL_VAR NAME="phone">">
 		</form>
 		</TMPL_IF>

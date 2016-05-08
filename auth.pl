@@ -120,31 +120,31 @@ sub register(){
 };
 
 sub verify(){
-	my $verify = $dbi->select(
+	my $client = $dbi->select(
 		table => 'clients',
-		columns => ['id,','code','ip','mac'],
+		columns => ['id,','ip','mac','code'],
 		where => {phone => $params->{phone}, ip => $remote_ip},
 	)->fetch_hash;
 
-	if(($verify->{code} eq $params->{code})){
-		my $mac = Net::ARP::arp_lookup($config->{dev},$verify->{ip});
-		if ($mac ne 'unknown' && $mac ne $verify->{mac}){
+	if(($client->{code} eq $params->{code})){
+		my $mac = Net::ARP::arp_lookup($config->{dev},$client->{ip});
+		if ($mac ne 'unknown' && $mac ne $client->{mac}){
 			$dbi->update(
 				{mac => $mac},
 				table => 'clients',
-				where => {id => $verify->{id}},	
+				where => {id => $client->{id}},	
 			);
 	
 			#Create queue for rules
 			$dbi->insert(
-				{cid => $verify->{id}},
+				{cid => $client->{id}},
 				table => 'rules_q',
 			);
 
 			$msg = "Регистрация прошла успешно. В течение 5 минут будет организован доступ в интернет.";
 		
 		}else{
-			$msg = 'Ошибка в определении сетевого адреса устройства.';
+			$msg = "Ошибка в определении сетевого адреса устройства (CLIENT_ID:&nbsp;$client->{id})";
 
 		};
 	}else{

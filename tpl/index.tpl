@@ -35,17 +35,18 @@
 					<div class="col-sm-3 col-xs-8">
 						<div class="input-group">
 						<span class="input-group-addon">+7</span>
-			    	<input type="tel" class="form-control input-lg" id="InputPhone" placeholder="" name="phone">
+			    	<input type="tel" class="form-control input-lg" id="InputPhone" placeholder="" name="phone" value="<TMPL_VAR NAME="phone">">
 			    	</div>
 				  </div>
 				 </div>
 	  		
 	  		<p class="help-block">Пример: 9082093223</p>
   		</div>
-  	
-  		<button type="submit" class="btn btn-default btn-lg">Далее</button>
-  		<input type="hidden" name="tpl" value="register">
 
+ 			
+    	<p>Нажимая кнопку "Далее" я подтверждаю своё понимание и принятие условий "Пользовательского соглашения".</p>
+		  
+		  <button type="submit" class="btn btn-default btn-lg">Далее</button>
 		</form>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

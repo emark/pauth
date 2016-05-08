@@ -60,7 +60,10 @@ sub index(){
 		$msg = 'Ошибка. Укажите номер мобильного телефона. Не более 10 цифр.';
 
 	};
-	$tpl->param(msg => $msg);
+	$tpl->param(
+		msg => $msg,
+		phone => $params->{'phone'},
+	);
 
 };
 

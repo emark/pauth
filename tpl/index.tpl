@@ -46,9 +46,9 @@
   		<div class="form-group">
   			<label for="InputPhone">Номер телефона</label>
   			<div class="row">
-					<div class="col-sm-4 col-xs-8">
+					<div class="col-sm-5 col-xs-8">
 						<div class="input-group">
-						<span class="input-group-addon">+7</span>
+						<span class="input-group-addon input-lg">+7</span>
 			    	<input type="tel" class="form-control input-lg" id="InputPhone" placeholder="" name="phone" value="<TMPL_VAR NAME="phone">">
 			    	</div>
 				  </div>

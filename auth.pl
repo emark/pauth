@@ -129,7 +129,7 @@ sub verify(){
 		where => {phone => $params->{phone}, ip => $remote_ip},
 	)->fetch_hash;
 
-	if(($params->{code} eq $client->{code} )){
+	if(($params->{code} eq $client->{code})){
 		my $mac = Net::ARP::arp_lookup($config->{dev},$client->{ip});
 		if ($mac ne 'unknown' && $mac ne $client->{mac}){
 			$dbi->update(

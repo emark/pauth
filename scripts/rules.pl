@@ -5,7 +5,6 @@ use strict;
 use DBIx::Custom;
 use YAML::XS 'LoadFile';
 use FindBin qw($Bin);
-use Data::Dumper;
 
 my $config = LoadFile($Bin.'/../config.yaml');
 
@@ -36,9 +35,13 @@ foreach my $client (@{$rules_for}){
 	system(@args) == 0 || die "system @args filed: $?\n";
 	$result = 1;
 
-	@args = ("$config->{iptables} -I FORWARD -s $client->{ip} -j ACCEPT");
+	@args = ("$config->{iptables} it nat -I PREROUTING -s $client->{ip} -j ACCEPT");
 	system(@args) == 0 || die "system @args field: $?\n";
 	$result = $result+2;
+
+	@args = ("$config->{iptables} -I FORWARD 1 -s $client->{ip} -j ACCEPT");
+	system(@args) == 0 || die "system @args field: $?\n";
+	$result = $result+4;
 
 	$dbi->update(
 		{result => $result},

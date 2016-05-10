@@ -35,7 +35,7 @@ foreach my $client (@{$rules_for}){
 	system(@args) == 0 || die "system @args filed: $?\n";
 	$result = 1;
 
-	@args = ("$config->{iptables} it nat -I PREROUTING -s $client->{ip} -j ACCEPT");
+	@args = ("$config->{iptables} -t nat -I PREROUTING -s $client->{ip} -j ACCEPT");
 	system(@args) == 0 || die "system @args field: $?\n";
 	$result = $result+2;
 

@@ -84,7 +84,10 @@ sub register(){
 	my $client = $dbi->select(
 		table => 'clients',
 		column => ['id'],
-		where => {phone => $phone, ip => $remote_ip},
+		where => [
+			['or',':phone{=}',':ip{=}'],
+			{phone => $phone, ip => $remote_ip},
+		],
 	)->value;
 
 	if(!$client){ #Create new registration
@@ -111,7 +114,7 @@ sub register(){
 		$msg = "Сообщение с кодом регистрации отправлено на номер <b>+7$phone</b>.";
 
 	}else{
-		$msg = 'Ваше устройство уже зарегистрировано или ожидается код регистрации.';
+		$msg = "Ваше устройство уже зарегистрировано или ожидается код регистрации. (CLIENT_ID:&nbsp;$client)";
 		
 	};
 	
@@ -147,7 +150,7 @@ sub verify(){
 			$msg = "Регистрация прошла успешно. В течение 5 минут будет организован доступ в интернет.";
 		
 		}else{
-			$msg = "Ошибка в определении сетевого адреса устройства (CLIENT_ID:&nbsp;$client->{id})";
+			$msg = "Ошибка в определении сетевого адреса устройства. (CLIENT_ID:&nbsp;$client->{id})";
 
 		};
 	}else{

@@ -66,7 +66,7 @@
     
     <footer class="footer">
       <div class="container">
-        <p class="text-muted">Красноярск, Три медведя, 2016</p>
+        <p class="text-muted">Гостиница &laquo;Три медведя&r1qaquo;, Красноярск</p>
       </div>
     </footer>
 

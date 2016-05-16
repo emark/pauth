@@ -36,6 +36,7 @@
     <!-- Begin page content -->
     <div class="container">
       <div class="page-header">
+      	<div class="center-block"><img src="/public/bootstrap/assets/img/free-wifi.png" class="img-responsive"></div>
         <h1>Регистрация подключения к сети интернет</h1>
       </div>
     
@@ -65,7 +66,7 @@
     
     <footer class="footer">
       <div class="container">
-        <p class="text-muted">Гостиница &laquo;Три медведя&r1qaquo;, Красноярск</p>
+        <p class="text-muted">Гостиница &laquo;Три медведя&raquo;, Красноярск</p>
       </div>
     </footer>
 

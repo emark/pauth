@@ -68,9 +68,9 @@ sub index(){
 };
 
 sub register(){
-	my $code = 0; # Generate sms code
-	while ($code < 100000){
-		$code = int(rand(999999));
+	my $code = 0; # Generate sms code 4 digits
+	while ($code < 1000){
+		$code = int(rand(9999));
 	};	
 	
 	my $token = ''; #Token uses for identification clients id
@@ -133,7 +133,7 @@ sub verify(){
 	)->fetch_hash;
 
 	if(($params->{code} eq $client->{code})){
-		my $mac = Net::ARP::arp_lookup($config->{dev},$client->{ip});
+		my $mac = Net::ARP::arp_lookup($config->{dev},$client->{ip}) || 'unknown';
 		if ($mac ne 'unknown' && $mac ne $client->{mac}){
 			$dbi->update(
 				{mac => $mac},

@@ -46,18 +46,30 @@
      	<form action="" method="post">
   		
   		<div class="form-group">
+  			<label for="InputPhone">Номер телефона</label>
+  			<div class="row">
+					<div class="col-sm-5 col-xs-8">
+						<div class="input-group">
+						<span class="input-group-addon input-lg">+7</span>
+			    	<input type="tel" class="form-control input-lg" id="InputPhone" placeholder="" name="phoneview" value="<TMPL_VAR NAME="phone">" disabled>
+			    	</div>
+				  </div>
+				</div>
+  		</div>
+  		
+  		<div class="form-group">
   			<label for="InputCode">Код регистрации</label>
-  			
   			<div class="row">
 					<div class="col-sm-3 col-xs-6">
 	  			<input type="number" class="form-control input-lg" id="InputCode" placeholder="" name="code" value="<TMPL_VAR NAME="code">">
 	  			</div>
 	  		</div>
-	  		
   		</div>
   		
-  		<button type="submit" class="btn btn-default btn-lg">Далее</button>
   		<input type="hidden" name="phone" value="<TMPL_VAR NAME="phone">">
+  		
+  		<button type="submit" class="btn btn-default btn-lg">Далее</button>
+
 			</form>
 			&nbsp;
 			</TMPL_IF>

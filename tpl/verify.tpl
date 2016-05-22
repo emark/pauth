@@ -36,7 +36,6 @@
     <!-- Begin page content -->
     <div class="container">
       <div class="page-header">
-      	<div class="center-block"><img src="/public/bootstrap/assets/img/free-wifi.png" class="img-responsive"></div>
         <h1>Регистрация подключения к сети интернет</h1>
       </div>
     

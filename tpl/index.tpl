@@ -36,7 +36,6 @@
     <!-- Begin page content -->
     <div class="container">
       <div class="page-header">
-      	<div class="center-block"><img src="/public/bootstrap/assets/img/free-wifi.png" class="img-responsive"></div>
         <h1>Регистрация подключения к сети интернет</h1>
       </div>
     
@@ -56,12 +55,12 @@
 				 </div>
   		</div>
  			
-    	<p>Нажимая кнопку "Далее" я подтверждаю своё понимание и принятие условий <a href="">"Пользовательского соглашения"</a>.</p>
+    	<p>Нажимая кнопку "Далее" я подтверждаю своё согласие с условиями <a href="">"Пользовательского соглашения"</a>.</p>
 		  
 		  <button type="submit" class="btn btn-default btn-lg">Далее</button>
 
-		</form>
-		&nbsp;
+			</form>
+			&nbsp;
     </div>
     
     <footer class="footer">

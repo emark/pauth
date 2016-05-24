@@ -12,9 +12,9 @@ use YAML::XS 'LoadFile';
 my $config = LoadFile('config.yaml');
 
 my $dbi = DBIx::Custom->connect(
-   dsn => "dbi:mysql:database=$config->{database}",
-   user => $config->{user},
-   password => $config->{pass},
+   dsn => "dbi:mysql:database=$config->{'database'}",
+   user => $config->{'user'},
+   password => $config->{'pass'},
    option => {mysql_enable_utf8 => 1}
 );
 
@@ -31,10 +31,10 @@ my %route = (
 			'verify' => \&verify,
 			);
 
-if($params->{phone} && $params->{code}){
+if($params->{'phone'} && $params->{'code'}){
 	$template = 'verify';
 
-}elsif($params->{phone}){
+}elsif($params->{'phone'}){
 	$template = 'register' if &phone_check();
 
 };
@@ -48,7 +48,7 @@ print "Content-Type: text/html\n\n", $tpl->output;
 
 
 sub phone_check(){
-	my $phone = $params->{phone};
+	my $phone = $params->{'phone'};
 	return 1 if($phone=~m/^\d{10}$/); #Check for 10 digits in phone number
 
 };
@@ -56,7 +56,7 @@ sub phone_check(){
 sub index(){
 	$msg = 'Введите номер телефона для получения смс&ndash;сообщения с кодом доступа в интернет.';
 	
-	if($params->{phone}){
+	if($params->{'phone'}){
 		$msg = 'Ошибка. Укажите номер мобильного телефона. Не более 10 цифр.';
 
 	};
@@ -80,7 +80,7 @@ sub register(){
     	$token = $token.$dict[rand(61)];
     };
 
-	my $phone = $params->{phone};
+	my $phone = $params->{'phone'};
 	my $client = $dbi->select(
 		table => 'clients',
 		column => ['id'],
@@ -129,33 +129,33 @@ sub verify(){
 	my $client = $dbi->select(
 		table => 'clients',
 		columns => ['id,','ip','mac','code'],
-		where => {phone => $params->{phone}, ip => $remote_ip},
+		where => {phone => $params->{'phone'}, ip => $remote_ip},
 	)->fetch_hash;
 
-	if(($params->{code} eq $client->{code})){
-		my $mac = Net::ARP::arp_lookup($config->{dev},$client->{ip}) || 'unknown';
-		if ($mac ne 'unknown' && $mac ne $client->{mac}){
+	if($client && ($params->{'code'} eq $client->{'code'})){
+		my $mac = Net::ARP::arp_lookup($config->{'dev'},$client->{'ip'}) || 'unknown';
+		if ($mac ne 'unknown' && $mac ne $client->{'mac'}){
 			$dbi->update(
 				{mac => $mac},
 				table => 'clients',
-				where => {id => $client->{id}},	
+				where => {id => $client->{'id'}},	
 			);
 	
 			#Create queue for rules
 			$dbi->insert(
-				{cid => $client->{id}},
+				{cid => $client->{'id'}},
 				table => 'rules_q',
 			);
 
 			$msg = "Регистрация прошла успешно. В течение 3 минут будет организован доступ в интернет.";
 		
 		}else{
-			$msg = "Ошибка в определении сетевого адреса устройства. (CLIENT_ID:&nbsp;$client->{id})";
+			$msg = "Ошибка в определении сетевого адреса устройства. (CLIENT_ID:&nbsp;$client->{'id'})";
 
 		};
 	}else{
 		$msg = "Код регистрации введен неверно. Повторите ввод."; 
-		$tpl->param(phone => $params->{phone});
+		$tpl->param(phone => $params->{'phone'});
 	}
 
 	$tpl->param(msg => $msg);

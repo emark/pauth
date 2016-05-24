@@ -28,8 +28,6 @@ $dbi->delete(
 &archiving if($task eq 'archiving');
 
 sub archiving(){
-	print "Start archiving...";
-
 	my $hosts = $dbi->select(
 		table => 'clients',
 		column => ['cdate','phone','ip','mac'],
@@ -59,7 +57,6 @@ sub archiving(){
 	$dbi->delete_all(
 		table => 'rules_q',
 	);	
-	print "done.\n";
 
 };
 

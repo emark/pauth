@@ -39,7 +39,7 @@
         <h1>Регистрация подключения к сети интернет</h1>
       </div>
     
-    	<p class="well"><TMPL_VAR NAME="msg"></p>
+    	<div class="well"><TMPL_VAR NAME="msg"></div>
 		
     	<TMPL_IF NAME="phone">
      	<form action="" method="post">

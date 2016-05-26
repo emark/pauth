@@ -22,7 +22,7 @@ my $past_date = &sql_date_format;
 #Clear database from empty mac address
 $dbi->delete(
 	table => 'clients',
-	where => "cdate<\"$past_date\" and mac=\"0\"",
+	where => "cdate < \"$past_date\" and mac = \"0\"",
 );
 
 &archiving if($task eq 'archiving');
@@ -31,7 +31,7 @@ sub archiving(){
 	my $hosts = $dbi->select(
 		table => 'clients',
 		column => ['cdate','phone','ip','mac'],
-		where => 'mac is not null',
+		where => 'mac <> 0',
 	)->fetch_hash_all;
 
 	foreach my $host(@{$hosts}){

@@ -18,7 +18,7 @@ my $dbi = DBIx::Custom->connect(
 my $clients_id = $dbi->select(
 	table => 'clients',
 	column => ['id as cid'],
-	where => 'mac is not null',
+	where => 'mac <> 0',
 )->fetch_hash_all;
 
 $dbi->insert(

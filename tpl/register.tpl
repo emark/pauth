@@ -60,7 +60,7 @@
   			
   			<div class="row">
 					<div class="col-sm-3 col-xs-6">
-	  			<input type="number" class="form-control input-lg" id="InputCode" placeholder="" name="code" value="">
+	  			<input type="number" class="form-control input-lg" id="InputCode" placeholder="" name="code" value="<TMPL_VAR NAME="code">">
 	  			</div>
 	  		</div>
 	  		

@@ -114,6 +114,7 @@ sub register(){
 		$msg = "Сообщение с кодом регистрации отправлено.";
 
 	}else{
+		$code = 0;
 		$msg = "Ваше устройство уже зарегистрировано или ожидается код регистрации. (CLIENT_ID:&nbsp;$client)";
 		
 	};
@@ -121,6 +122,7 @@ sub register(){
 	$tpl->param(
 		msg => $msg,
 		phone => $phone,
+		code => $code;
 	);
 
 };

@@ -31,20 +31,13 @@ sub archiving(){
 	my $hosts = $dbi->select(
 		table => 'clients',
 		column => ['cdate','phone','ip','mac'],
-		where => 'mac <> 0',
+		where => 'mac not like "0"',
 	)->fetch_hash_all;
 
-	foreach my $host(@{$hosts}){
-		$dbi->insert(
-			{
-				cdate => $host->{cdate}, 
-				phone => $host->{phone},
-				ip => $host->{ip},
-				mac => $host->{mac},
-			},
-			table => 'hosts',
-		);
-	};	
+	$dbi->insert(
+		$hosts,
+		table => 'hosts',
+	);
 
 	$dbi->delete_all(
 		table => 'clients',

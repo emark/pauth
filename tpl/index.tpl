@@ -41,6 +41,8 @@
     
     	<div class="well"><TMPL_VAR NAME="msg"></div>
 		
+			<TMPL_IF NAME="service">
+			
     	<form action="" method="post">
     	
   		<div class="form-group">
@@ -60,6 +62,8 @@
 		  <button type="submit" class="btn btn-default btn-lg">Далее</button>
 
 			</form>
+			
+			</TMPL_IF>
 			&nbsp;
     </div>
     

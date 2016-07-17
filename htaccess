@@ -1,0 +1,26 @@
+# Default template .htaccess
+
+#Root directory /
+Options +ExecCGI
+
+IndexIgnore *
+
+RewriteEngine on
+
+RewriteCond %{DOCUMENT_ROOT}/public/%{REQUEST_URI} -d
+RewriteCond %{DOCUMENT_ROOT}/public/%{REQUEST_URI} -l
+RewriteCond %{DOCUMENT_ROOT}/public/%{REQUEST_URI} -f
+RewriteRule ^(.*) /public/$1 [L]
+
+RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} !-f
+RewriteRule ^(.*)$ /index.html [L]
+
+#/reg/
+#RewriteRule ^(.*)$ http://%{SERVER_ADDR}/internet/ [R=301]
+
+#/internet/
+#IndexIgnore *
+
+#RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} !-f
+#RewriteRule ^(.*) /cgi-bin/pauth/auth.pl [L]
+

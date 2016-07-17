@@ -28,5 +28,4 @@ arp: [path of arp]
 
 iptables: [path of iptables]
 
-service: [flag of service status, service stopped if empty]
-~              
+service: [flag of service status, service stopped if empty]             

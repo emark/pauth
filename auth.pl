@@ -140,20 +140,27 @@ sub verify(){
 
 	if($client){
 		my $mac = Net::ARP::arp_lookup($config->{'dev'},$client->{'ip'}) || 'unknown';
-		if ($mac ne 'unknown' && $mac ne $client->{'mac'}){
-			$dbi->update(
-				{mac => $mac},
-				table => 'clients',
-				where => {id => $client->{'id'}},	
-			);
+		if ($mac ne 'unknown'){
+			if ($mac ne $client->{'mac'}){
+				$dbi->update(
+					{mac => $mac},
+					table => 'clients',
+					where => {id => $client->{'id'}},	
+				);
 	
-			#Create queue for rules
-			$dbi->insert(
-				{token => $client->{'token'}},
-				table => 'rules_q',
-			);
+				#Create queue for rules
+				$dbi->insert(
+					{token => $client->{'token'}},
+					table => 'rules_q',
+				);
 
-			$msg = "Регистрация прошла успешно. В течение 3 минут будет организован доступ в интернет. Регистрация устройства будет отменена в 00:01 местного времени.";
+				$msg = "Регистрация прошла успешно. В течение 3 минут будет организован доступ в интернет. Регистрация устройства будет отменена в 00:01 местного времени.";
+				$tpl->param(token => $client->{'token'});
+
+			}else{
+				$msg = "Подождите, идет настройка параметров соединения. Вы можете закрыть это окно.";
+
+			};
 		
 		}else{
 			$msg = "Ошибка в определении сетевого адреса устройства. (CLIENT_ID:&nbsp;$client->{'id'})";

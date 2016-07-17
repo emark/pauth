@@ -72,7 +72,7 @@
 			</form>
 			&nbsp;
 			</TMPL_IF>
-
+			
     </div>
     
     <footer class="footer">

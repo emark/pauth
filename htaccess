@@ -19,8 +19,6 @@ RewriteRule ^(.*)$ /index.html [L]
 #RewriteRule ^(.*)$ http://%{SERVER_ADDR}/internet/ [R=301]
 
 #/internet/
-#IndexIgnore *
-
 #RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} !-f
 #RewriteRule ^(.*) /cgi-bin/pauth/auth.pl [L]
 

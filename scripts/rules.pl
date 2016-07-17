@@ -15,16 +15,16 @@ my $dbi = DBIx::Custom->connect(
    option => {mysql_enable_utf8 => 1}
 );
 
-my @rcpt = $dbi->select(
+my @tks = $dbi->select(
 	table => 'rules_q',
-	column => ['cid'],
+	column => ['token'],
 	where => 'result is null',
 )->flat;
 
 my $rules_for = $dbi->select(
 	table => 'clients',
-	column => ['id','ip','mac'],
-	where => {id => \@rcpt},
+	column => ['token','ip','mac'],
+	where => {token => \@tks},
 )->fetch_hash_all;
 
 foreach my $client (@{$rules_for}){
@@ -46,7 +46,7 @@ foreach my $client (@{$rules_for}){
 	$dbi->update(
 		{result => $result},
 		table => 'rules_q',
-		where => {cid => $client->{id}},
+		where => {token => $client->{'token'}},
 	);
 };
 

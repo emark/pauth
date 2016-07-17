@@ -130,11 +130,15 @@ sub register(){
 sub verify(){
 	my $client = $dbi->select(
 		table => 'clients',
-		columns => ['id,','ip','mac','code'],
-		where => {phone => $params->{'phone'}, ip => $remote_ip},
+		columns => ['id,','ip','mac','token'],
+		where => {
+			phone => $params->{'phone'}, 
+			ip => $remote_ip,
+			code => $params->{'code'},
+			},
 	)->fetch_hash;
 
-	if($client && ($params->{'code'} eq $client->{'code'})){
+	if($client){
 		my $mac = Net::ARP::arp_lookup($config->{'dev'},$client->{'ip'}) || 'unknown';
 		if ($mac ne 'unknown' && $mac ne $client->{'mac'}){
 			$dbi->update(
@@ -145,7 +149,7 @@ sub verify(){
 	
 			#Create queue for rules
 			$dbi->insert(
-				{cid => $client->{'id'}},
+				{token => $client->{'token'}},
 				table => 'rules_q',
 			);
 

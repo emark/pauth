@@ -113,6 +113,7 @@ sub register(){
 		);
 
 		$msg = "Сообщение с кодом регистрации отправлено.";
+		$tpl->param(code => $code, sms_service => 1) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
 
 	}else{
 		$code = 0;

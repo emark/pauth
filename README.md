@@ -16,6 +16,8 @@ pass: [user password for database login]
 
 dev: [network card device name]
 
+sms_service: [run sms-code via sms-gate, run | 0]
+
 sms_sender: [name for sms sign]
 
 sms_gate: [url of sms-gate]
@@ -28,4 +30,4 @@ arp: [path of arp]
 
 iptables: [path of iptables]
 
-service: [flag of service status, service stopped if empty]             
+service: [flag of service status, run | 0]

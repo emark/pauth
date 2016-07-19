@@ -15,14 +15,14 @@ my $dbi = DBIx::Custom->connect(
    option => {mysql_enable_utf8 => 1}
 );
 
-my $clients_id = $dbi->select(
+my $tks = $dbi->select(
 	table => 'clients',
-	column => ['id as cid'],
+	column => ['token'],
 	where => 'mac not like "0"',
 )->fetch_hash_all;
 
 $dbi->insert(
-	$clients_id,
+	$tks,
 	table => 'rules_q',
 );
 

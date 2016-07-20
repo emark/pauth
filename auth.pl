@@ -21,7 +21,7 @@ my $dbi = DBIx::Custom->connect(
 my $q = CGI->new();
 my $params = $q->Vars;
 
-my $remote_ip = $ENV{REMOTE_ADDR}; #Client remote address
+my $client_ip = $ENV{REMOTE_ADDR}; #Client remote address
 
 my $msg = ''; #Help message for templates
 my $template = 'index'; #Default template name
@@ -87,7 +87,7 @@ sub register(){
 		column => ['id'],
 		where => [
 			['or',':phone{=}',':ip{=}'],
-			{phone => $phone, ip => $remote_ip},
+			{phone => $phone, ip => $client_ip},
 		],
 	)->value;
 
@@ -95,7 +95,7 @@ sub register(){
 		$dbi->insert(
 			{
 				phone => $phone,
-				ip => $remote_ip,
+				ip => $client_ip,
 				code => $code,
 				token => $token,
 			},
@@ -113,7 +113,7 @@ sub register(){
 		);
 
 		$msg = "Сообщение с кодом регистрации отправлено.";
-		$tpl->param(code => $code, sms_service => 1) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
+		$tpl->param(code => $code, show_code => 1) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
 
 	}else{
 		$code = 0;
@@ -134,7 +134,7 @@ sub verify(){
 		columns => ['id,','ip','mac','token'],
 		where => {
 			phone => $params->{'phone'}, 
-			ip => $remote_ip,
+			ip => $client_ip,
 			code => $params->{'code'},
 			},
 	)->fetch_hash;

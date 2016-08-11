@@ -29,6 +29,7 @@ my %route = (
 			'index' => \&index,
 			'register' => \&register,
 			'verify' => \&verify,
+			'connect' => \&connect,
 			);
 
 if($params->{'phone'} && $params->{'code'}){
@@ -37,6 +38,8 @@ if($params->{'phone'} && $params->{'code'}){
 }elsif($params->{'phone'}){
 	$template = 'register' if &phone_check();
 
+}elsif($params->{'token'}){
+	$template = 'connect';
 };
 
 my $tpl = HTML::Template->new(filename => 'tpl/'.$template.'.tpl');
@@ -172,4 +175,9 @@ sub verify(){
 	}
 
 	$tpl->param(msg => $msg);
+};
+
+#Checking allow connection
+sub connect(){
+
 };

@@ -42,7 +42,7 @@ if($params->{'phone'} && $params->{'code'}){
 	$template = 'connect';
 };
 
-my $tpl = HTML::Template->new(filename => 'tpl/'.$template.'.tpl');
+my $tpl = HTML::Template->new(filename => 'tmpl/'.$template.'.tmpl');
 
 my $func = $route{$template};
 &$func();
@@ -158,11 +158,11 @@ sub verify(){
 					table => 'rules_q',
 				);
 
-				$msg = "Регистрация прошла успешно. В течение 3 минут будет организован доступ в интернет. Регистрация устройства будет отменена в 00:01 местного времени. Для продолжения нажмите \"Далее\".";
+				$msg = "Регистрация прошла успешно. Отмена регистриции в 00:01 местного времени. Для доступа в интернет нажмите \"Подключить\".";
 				$tpl->param(token => $client->{'token'});
 
 			}else{
-				$msg = "Устройство зарегистрировано. Для продолжения нажмите \"Далее\".";
+				$msg = "Устройство зарегистрировано. Для доступа в интернет нажмите \"Подключить\".";
 				$tpl->param(token => $client->{'token'});
 
 			};
@@ -183,7 +183,7 @@ sub verify(){
 sub connect(){
 	my $token = $params->{'token'};
 	my $url = "?token=$token";
-	my $refresh = 5;
+	my $refresh = 7;
 	$msg = "Проверка доступа в интернет ... ";
 	
 	my $rules = $dbi->select(
@@ -191,23 +191,30 @@ sub connect(){
 		columns => 'result',
 		where => {token => $token},
 	)->fetch_hash;
-	
-	if ($rules->{'result'}){
-		if ($rules->{'result'} == 7){
+
+	if (defined $rules->{'result'}){
+		if ($rules->{'result'} == 0){
+			$msg = $msg."ожидайте";
+
+		}elsif ($rules->{'result'} == 7){
 			$url = $config->{'target_url'};
 			$msg = $msg."успешно";
 			$refresh = 0;
 
 		}else{
-			$msg = $msg."ожидайте";
+			$url = '/';
+			$refresh = '';
+			$msg = 'Ошибка создания правил доступа устройства. Обратитесь к системному администратору.';
 
 		};
 
 	}else{
-		$token = '';
+		$url = '/';
+		$msg = 'Ошибка определения ключа настроек. Пройдите регистрацию повторно.';
+		$refresh = 3;
 
 	};
-	
+
 	$tpl->param(
 		msg => $msg,
 		url => $url,

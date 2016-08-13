@@ -71,13 +71,14 @@
 
 			</form>
 			
-			<TMPL_ELSE>
+			</TMPL_IF>
+			<TMPL_IF NAME="token">
 			
 			<form action="" method="post">
 			
 			<input type="hidden" name="token" value="<TMPL_VAR NAME="token">">
   		
-  		<button type="submit" class="btn btn-default btn-lg">Далее</button>
+  		<button type="submit" class="btn btn-default btn-lg">Подключить</button>
 			</form>
 			</TMPL_IF>
 			

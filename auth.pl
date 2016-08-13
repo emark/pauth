@@ -158,10 +158,12 @@ sub verify(){
 					table => 'rules_q',
 				);
 
-				$msg = "Регистрация прошла успешно. В течение 3 минут будет организован доступ в интернет. Регистрация устройства будет отменена в 00:01 местного времени.";
+				$msg = "Регистрация прошла успешно. В течение 3 минут будет организован доступ в интернет. Регистрация устройства будет отменена в 00:01 местного времени. Для продолжения нажмите \"Далее\".";
+				$tpl->param(token => $client->{'token'});
 
 			}else{
-				$msg = "Подождите, идет настройка параметров соединения. Вы можете закрыть это окно.";
+				$msg = "Устройство зарегистрировано. Для продолжения нажмите \"Далее\".";
+				$tpl->param(token => $client->{'token'});
 
 			};
 		
@@ -179,5 +181,36 @@ sub verify(){
 
 #Checking allow connection
 sub connect(){
+	my $token = $params->{'token'};
+	my $url = "?token=$token";
+	my $refresh = 5;
+	$msg = "Проверка доступа в интернет ... ";
+	
+	my $rules = $dbi->select(
+		table => 'rules_q',
+		columns => 'result',
+		where => {token => $token},
+	)->fetch_hash;
+	
+	if ($rules->{'result'}){
+		if ($rules->{'result'} == 7){
+			$url = $config->{'target_url'};
+			$msg = $msg."успешно";
+			$refresh = 0;
 
+		}else{
+			$msg = $msg."ожидайте";
+
+		};
+
+	}else{
+		$token = '';
+
+	};
+	
+	$tpl->param(
+		msg => $msg,
+		url => $url,
+		refresh => $refresh,
+	);
 };

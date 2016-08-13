@@ -18,7 +18,7 @@ my $dbi = DBIx::Custom->connect(
 my @tks = $dbi->select(
 	table => 'rules_q',
 	column => ['token'],
-	where => 'result is null',
+	where => {result => 0},
 )->flat;
 
 my $rules_for = $dbi->select(

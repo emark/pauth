@@ -70,9 +70,18 @@
   		<button type="submit" class="btn btn-default btn-lg">Далее</button>
 
 			</form>
-			&nbsp;
+			
+			<TMPL_ELSE>
+			
+			<form action="" method="post">
+			
+			<input type="hidden" name="token" value="<TMPL_VAR NAME="token">">
+  		
+  		<button type="submit" class="btn btn-default btn-lg">Далее</button>
+			</form>
 			</TMPL_IF>
 			
+			&nbsp;
     </div>
     
     <footer class="footer">

@@ -116,7 +116,7 @@ sub register(){
 		);
 
 		$msg = "Сообщение с кодом регистрации отправлено. Срок действия кода 300 секунд.";
-		$tpl->param(code => $code, show_code => 1) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
+		$tpl->param(code => $code) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
 
 	}else{
 		$code = 0;

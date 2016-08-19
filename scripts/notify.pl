@@ -40,8 +40,8 @@ sub get_queue(){
 	
 	#Send sms via sms-gate, write result to database
 	foreach my $rcpt (@{$rcpts}){
-		$result = &send_sms($rcpt->{phone},$rcpt->{code});
-	
+		$result = $config->{'sms_service'} ? &send_sms($rcpt->{phone},$rcpt->{code}) : 'localhost';
+
 		$dbi->update(
 			{result => $result},
 			table => 'notify_q',

@@ -42,12 +42,12 @@ if($params->{'phone'} && $params->{'code'}){
 	$template = 'connect';
 };
 
-my $tpl = HTML::Template->new(filename => 'tmpl/'.$template.'.tmpl');
+my $tmpl = HTML::Template->new(filename => 'tmpl/'.$template.'.tmpl');
 
 my $func = $route{$template};
 &$func();
 
-print "Content-Type: text/html\n\n", $tpl->output;
+print "Content-Type: text/html\n\n", $tmpl->output;
 
 
 sub phone_check(){
@@ -63,7 +63,7 @@ sub index(){
 		$msg = 'Ошибка. Укажите номер мобильного телефона. Не более 10 цифр.';
 
 	};
-	$tpl->param(
+	$tmpl->param(
 		msg => $msg,
 		phone => $params->{'phone'},
 		service => $config->{'service'},
@@ -116,7 +116,7 @@ sub register(){
 		);
 
 		$msg = "Сообщение с кодом регистрации отправлено. Срок действия кода 300 секунд.";
-		$tpl->param(code => $code) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
+		$tmpl->param(code => $code) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
 
 	}else{
 		$code = 0;
@@ -124,7 +124,7 @@ sub register(){
 		
 	};
 	
-	$tpl->param(
+	$tmpl->param(
 		msg => $msg,
 		phone => $phone,
 	);
@@ -159,11 +159,11 @@ sub verify(){
 				);
 
 				$msg = "Регистрация прошла успешно. Отмена регистрации в 00:01 местного времени. Для доступа в интернет нажмите \"Подключить\".";
-				$tpl->param(token => $client->{'token'});
+				$tmpl->param(token => $client->{'token'});
 
 			}else{
 				$msg = "Устройство зарегистрировано. Для доступа в интернет нажмите \"Подключить\".";
-				$tpl->param(token => $client->{'token'});
+				$tmpl->param(token => $client->{'token'});
 
 			};
 		
@@ -173,10 +173,10 @@ sub verify(){
 		};
 	}else{
 		$msg = "Код регистрации введен неверно. Повторите ввод."; 
-		$tpl->param(phone => $params->{'phone'});
+		$tmpl->param(phone => $params->{'phone'});
 	}
 
-	$tpl->param(msg => $msg);
+	$tmpl->param(msg => $msg);
 };
 
 #Checking allow connection
@@ -215,7 +215,7 @@ sub connect(){
 
 	};
 
-	$tpl->param(
+	$tmpl->param(
 		msg => $msg,
 		url => $url,
 		refresh => $refresh,

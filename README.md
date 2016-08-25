@@ -2,22 +2,7 @@ P(hone)Auth - captive portal for wireless network
 
 Source: github.com/emark/pauth
 
-# Configuration
+# Installation
 
-Filename: config.yaml
-
-===
-
-database: [database name]  
-user: [username for database login]  
-pass: [user password for database login]  
-dev: [network card device name]  
-sms_service: [run sms-code via sms-gate, run | 0]  
-sms_sender: [name for sms sign]  
-sms_gate: [url of sms-gate]  
-sms_login: [username for sms-gate login]  
-sms_pass: [password for sms-gate login]  
-arp: [path of arp]  
-iptables: [path of iptables]  
-service: [flag of service status, run | 0]  
-target_url: [target url for redirect]
+1. Copy config.yaml from config.sample  
+2. Generate database from schema.sql

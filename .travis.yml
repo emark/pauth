@@ -1,0 +1,22 @@
+language: perl
+perl:
+  - "5.22"
+  - "5.20"
+  - "5.18"
+
+before_install:
+    - sudo apt-get update -q
+    - cpanm HTML::Template
+    - cpanm CGI
+    - cpanm YAML::XS
+
+install:
+    - cpanm -v --installdeps --notest .
+
+notifications:
+   recipients:
+       - mailbox@emrk.ru
+         email:
+             on_success: change
+             on_failure: always
+

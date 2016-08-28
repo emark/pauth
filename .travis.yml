@@ -11,12 +11,5 @@ before_install:
     - cpanm YAML::XS
 
 install:
-    - cpanm -v --installdeps --notest .
-
-notifications:
-   recipients:
-       - mailbox@emrk.ru
-         email:
-             on_success: change
-             on_failure: always
+    - cpanm -v --installdeps --notest 
 

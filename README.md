@@ -6,3 +6,5 @@ Source: github.com/emark/pauth
 
 1. Copy config.yaml from config.sample  
 2. Generate database from schema.sql
+
+(https://travis-ci.org/emark/pauth.svg?branch=master)

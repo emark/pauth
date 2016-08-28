@@ -1,1 +1,5 @@
-language: perl
+language: 
+        perl
+
+install:
+        -cpanm --quiet --installdeps --notest .

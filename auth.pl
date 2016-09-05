@@ -42,6 +42,9 @@ if($params->{'phone'} && $params->{'code'}){
 	$template = 'connect';
 };
 
+#Clear template if service not running
+$template = $config->{'service'} ? $template : 'index';
+
 my $tmpl = HTML::Template->new(filename => 'tmpl/'.$template.'.tmpl');
 
 my $func = $route{$template};

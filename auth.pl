@@ -109,17 +109,34 @@ sub register(){
 			table => 'clients',
 		);
 		
-		#Send registration code via SMS
-		#Add queue
-		$dbi->insert(
-			{
-				token => $token,
-			},
-			table => 'notify_q',
-		);
+		#Check client registration in archive database
+		my $mac = Net::ARP::arp_lookup($config->{'dev'},$client_ip) || 'unknown';
 
-		$msg = "Сообщение с кодом регистрации отправлено. Срок действия кода 300 секунд.";
-		$tmpl->param(code => $code) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
+		my $host = $dbi->select(
+			table => 'hosts',
+			columns => 'true',
+			where => {phone => $phone, mac => $mac}
+
+		)->value;
+
+		if($host){
+			$msg = 'Повторная регистрация. Нажмите кнопку "Далее"';
+			$tmpl->param(code => $code);
+
+		}else{
+			#Send registration code via SMS
+			#Add queue
+			$dbi->insert(
+				{
+					token => $token,
+				},
+				table => 'notify_q',
+			);
+
+			$msg = "Сообщение с кодом регистрации отправлено. Срок действия кода 300 секунд.";
+			$tmpl->param(code => $code) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
+
+		};
 
 	}else{
 		$code = 0;

@@ -1,7 +1,8 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #Notification via sms gate
 
 use strict;
+use warnings;
 use DBIx::Custom;
 use Mojo::UserAgent;
 use YAML::XS 'LoadFile';
@@ -40,7 +41,7 @@ sub get_queue(){
 	
 	#Send sms via sms-gate, write result to database
 	foreach my $rcpt (@{$rcpts}){
-		$result = $config->{'sms_service'} ? &send_sms($rcpt->{phone},$rcpt->{code}) : 'localhost';
+		$result = $config->{'sms_service'} ? &send_sms($rcpt->{phone},$rcpt->{code}) : 'local';
 
 		$dbi->update(
 			{result => $result},
@@ -55,7 +56,7 @@ sub send_sms(){
 	my ($phone,$code) = @_;
 	my $text = "$code%20%D0%BA%D0%BE%D0%B4%20%D1%80%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D0%B8%20%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B0";
 	my $result = '';
-	my $tx = $ua->get("http://$config->{'sms_gate'}?user=$config->{'sms_login'}&pass=$config->{'sms_pass'}&dadr=7$phone&text=$text&sadr=$config->{'sms_sender'}");
+	my $tx = $ua->get($config->{'sms_gate'}."?user=$config->{'sms_login'}&pass=$config->{'sms_pass'}&dadr=7$phone&text=$text&sadr=$config->{'sms_sender'}");
 
 	if (my $res = $tx->success){
 		$result = $res->body;

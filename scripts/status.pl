@@ -22,6 +22,15 @@ if($config->{service}){
 	#Clear garbage statuses if not equal '200 OK'
 	$config->{sms_service} = '' if($config->{sms_service} && $config->{sms_service} != 200);
 
+	#Set status-code of target url
+	my $tx = $ua->get($config->{target_url_default})->res->code || '';
+	
+	#Clear garbage statuses if not equal '200 OK'
+	$tx = '' if($tx && $tx != 200);
+	
+	#Set alternative target url if default is not respond
+	$config->{target_url} = $tx ? $config->{target_url_default} : $config->{internet};
+
 };
 
 open (CFG, ">", $cfgfile) || die "Can't open config file: $cfgfile. Error: $!";

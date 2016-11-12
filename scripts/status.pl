@@ -36,8 +36,12 @@ if($status->{service}){
 };
 
 foreach my $key (keys %{$status}){
-	$flag = 1 if($status->{$key} ne $config->{$key});
-}
+	if($status->{$key} ne $config->{$key}){
+		$config->{$key} = $status->{$key};	
+		$flag = 1;
+
+	};
+};
 
 if($flag){
 	open (CFG, ">", $cfgfile) || die "Can't open config file: $cfgfile. Error: $!";

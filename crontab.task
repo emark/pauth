@@ -1,0 +1,20 @@
+#Cron tasks for captive portal
+#
+#Check for service statuses
+*/5 * * * * /usr/bin/perl /home/admin/www/cgi-bin/pauth/scripts/status.pl
+
+#SMS notification queue
+* * * * * /usr/bin/perl /home/admin/www/cgi-bin/pauth/scripts/notify.pl
+
+#Set rules for firewall and arp
+* * * * * sudo /usr/bin/perl /home/admin/www/cgi-bin/pauth/scripts/rules.pl
+
+#Clear empty mac address from active clients
+*/2 * * * * /usr/bin/perl /home/admin/www/cgi-bin/pauth/scripts/cleardb.pl
+
+#Archiving registered hosts to database
+1 0 * * * /usr/bin/perl /home/admin/www/cgi-bin/pauth/scripts/cleardb.pl archiving
+
+#ARP and iptables restore
+3 0 * * * /sbin/iptables-restore /etc/iptables.conf
+4 0 * * * /bin/ip n|grep PERMANENT| while read ip colmn1 dev colmn2 mac; do ip n d $ip dev $dev; done

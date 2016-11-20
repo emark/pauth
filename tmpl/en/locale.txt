@@ -1,0 +1,15 @@
+Insert phone number for recieving sms message with registration code. Phone number must be only digits without spaces.
+Sorry, service is unavialable. Updating services prgramm.
+Sorry, please input phone number. Only 10 digits.
+Secondary registration. Press button "Next"
+Registration code was sent. Must activated in 300 seconds.
+Your device was registered or waiting code activated.
+Register success. Cancel registration at 00:01 local time. For internet access press "Connect"
+Device is register. For internet access press "Connect"
+Error defined network address
+Registration code is wrong. Repeat.
+Configuration internet access ... 
+waiting
+success
+Error creation rules for device access. Contact with system administrator.
+Error defined configuration token. Repeat registration one more.

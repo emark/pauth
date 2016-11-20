@@ -29,8 +29,11 @@ my $client_ip = $ENV{REMOTE_ADDR}; #Client remote address
 
 my $lang = $ENV{REQUEST_URI} || '/internet/ru/'; #Set translate localisation
 $lang =~s/\/internet(\/\w+\/)/$1/;
+$lang = '/ru/' if !-e "tmpl/$lang/locale.txt";
+
+my $file_locale = "tmpl/$lang/locale.txt";
 my @locale = '';
-open (LOCALE,"<","tmpl/$lang/locale.txt") || die "Can't open locale translation. Error: $!";
+open (LOCALE, "<", $file_locale) || die "Can't open locale translation: $file_locale. Error: $!";
 @locale = <LOCALE>;
 close LOCALE;
 

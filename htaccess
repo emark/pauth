@@ -16,9 +16,12 @@ RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} !-f
 RewriteRule ^(.*)$ /index.html [L]
 
 #/reg/
-#RewriteRule ^(.*)$ http://%{SERVER_ADDR}/internet/ [R=301]
+RewriteRule ^(.*)$ http://%{SERVER_ADDR}/internet/ [R=301]
 
 #/internet/
-#RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} !-f
-#RewriteRule ^(.*) /cgi-bin/pauth/auth.pl [L]
+RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} -d
+RewriteRule ^(.*) /internet/ru/ [R]
+
+RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} !-d
+RewriteRule ^(.*) /cgi-bin/pauth/auth.pl [L]
 

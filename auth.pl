@@ -1,7 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
+
 #Web-authorisation script
+#Source https://github.com/emark/pauth
+#Author E-marketing LLC, http://www.emark.ru, mailbox@emrk.ru
 
 use strict;
+use warnings;
 use integer;
 use CGI;
 use DBIx::Custom;
@@ -22,6 +26,13 @@ my $q = CGI->new();
 my $params = $q->Vars;
 
 my $client_ip = $ENV{REMOTE_ADDR}; #Client remote address
+
+my $lang = $ENV{REQUEST_URI} || '/internet/ru/'; #Set translate localisation
+$lang =~s/\/internet(\/\w+\/)/$1/;
+my @locale = '';
+open (LOCALE,"<","tmpl/$lang/locale.txt") || die "Can't open locale translation. Error: $!";
+@locale = <LOCALE>;
+close LOCALE;
 
 my $msg = ''; #Help message for templates
 my $template = 'index'; #Default template name
@@ -45,7 +56,7 @@ if($params->{'phone'} && $params->{'code'}){
 #Clear template if service not running
 $template = $config->{'service'} ? $template : 'index';
 
-my $tmpl = HTML::Template->new(filename => 'tmpl/'.$template.'.tmpl');
+my $tmpl = HTML::Template->new(filename => 'tmpl'.$lang.$template.'.tmpl');
 
 my $func = $route{$template};
 &$func();
@@ -60,10 +71,10 @@ sub phone_check(){
 };
 
 sub index(){
-	$msg = $config->{'service'} ? 'Введите номер телефона для получения смс&ndash;сообщения с кодом регистрации устройства. Вводите только цифры без пробелов.' : 'Извините, сервис временно недоступен. Выполняется обновление программного обеспечения.';
+	$msg = $config->{'service'} ? $locale[0] : $locale[1]; #'Введите номер телефона для получения смс'|'Извините, сервис временно недоступен.'
 	
 	if($params->{'phone'}){
-		$msg = 'Ошибка. Укажите номер мобильного телефона. Не более 10 цифр.';
+		$msg = $locale[2]; #'Ошибка. Укажите номер мобильного телефона.'
 
 	};
 	$tmpl->param(
@@ -120,7 +131,7 @@ sub register(){
 		)->value;
 
 		if($host){
-			$msg = 'Повторная регистрация. Нажмите кнопку "Далее"';
+			$msg = $locale[3]; #'Повторная регистрация. Нажмите кнопку "Далее"'
 			$tmpl->param(code => $code);
 
 		}else{
@@ -133,14 +144,14 @@ sub register(){
 				table => 'notify_q',
 			);
 
-			$msg = "Сообщение с кодом регистрации отправлено. Срок действия кода 300 секунд.";
+			$msg = $locale[4]; #'Сообщение с кодом регистрации отправлено. Срок действия кода 300 секунд.'
 			$tmpl->param(code => $code) if !$config->{'sms_service'}; #Disconnect sms_gate & show code
 
 		};
 
 	}else{
 		$code = 0;
-		$msg = "Ваше устройство уже зарегистрировано или ожидается код регистрации. (CLIENT_ID:&nbsp;$client)";
+		$msg = $locale[5]."(CLIENT_ID:&nbsp;$client)"; #'Ваше устройство уже зарегистрировано или ожидается код регистрации.'
 		
 	};
 	
@@ -178,21 +189,21 @@ sub verify(){
 					table => 'rules_q',
 				);
 
-				$msg = "Регистрация прошла успешно. Отмена регистрации в 00:01 местного времени. Для доступа в интернет нажмите \"Подключить\".";
+				$msg = $locale[6]; #'Регистрация прошла успешно. Отмена регистрации в 00:01 местного времени.'
 				$tmpl->param(token => $client->{'token'});
 
 			}else{
-				$msg = "Устройство зарегистрировано. Для доступа в интернет нажмите \"Подключить\".";
+				$msg = $locale[7]; #'Устройство зарегистрировано. Для доступа в интернет нажмите "Подключить".'
 				$tmpl->param(token => $client->{'token'});
 
 			};
 		
 		}else{
-			$msg = "Ошибка в определении сетевого адреса устройства. (CLIENT_ID:&nbsp;$client->{'id'})";
+			$msg = $locale[8]."(CLIENT_ID:&nbsp;$client->{'id'})"; #'Ошибка в определении сетевого адреса устройства.'
 
 		};
 	}else{
-		$msg = "Код регистрации введен неверно. Повторите ввод."; 
+		$msg = $locale[9]; #'Код регистрации введен неверно. Повторите ввод.' 
 		$tmpl->param(phone => $params->{'phone'});
 	}
 
@@ -204,7 +215,7 @@ sub connect(){
 	my $token = $params->{'token'};
 	my $url = "?token=$token";
 	my $refresh = 7;
-	$msg = "Настройка интернет-соединения ... ";
+	$msg = $locale[10]; #'Настройка интернет-соединения ... '
 	
 	my $rules = $dbi->select(
 		table => 'rules_q',
@@ -214,23 +225,23 @@ sub connect(){
 
 	if (defined $rules->{'result'}){
 		if ($rules->{'result'} == 0){
-			$msg = $msg."ожидайте";
+			$msg = $msg.$locale[11]; #'ожидайте'
 
 		}elsif ($rules->{'result'} == 7){
 			$url = $config->{'target_url'};
-			$msg = $msg."успешно";
+			$msg = $msg.$locale[12]; #'успешно'
 			$refresh = 0;
 
 		}else{
 			$url = '/';
 			$refresh = '';
-			$msg = 'Ошибка создания правил доступа устройства. Обратитесь к системному администратору.';
+			$msg = $locale[13]; #'Ошибка создания правил доступа устройства. Обратитесь к системному администратору.';
 
 		};
 
 	}else{
 		$url = '/';
-		$msg = 'Ошибка определения ключа настроек подключения. Пройдите регистрацию повторно.';
+		$msg = $locale[14]; #'Ошибка определения ключа настроек подключения. Пройдите регистрацию повторно.';
 		$refresh = 3;
 
 	};

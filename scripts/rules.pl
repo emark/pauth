@@ -1,6 +1,8 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #Managing rules of firewall and ARP
+#Captive portal script
 
+use warnings;
 use strict;
 use DBIx::Custom;
 use YAML::XS 'LoadFile';

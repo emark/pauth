@@ -1,6 +1,8 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #Clear and archiving database
+#Captive portal script
 
+use warnings;
 use strict;
 use DBIx::Custom;
 use YAML::XS 'LoadFile';

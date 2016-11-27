@@ -1,6 +1,8 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #Recovery rules of firewall and ARP (after shutdown or system failure) 
+#Captive portal script
 
+use warnings;
 use strict;
 use DBIx::Custom;
 use YAML::XS 'LoadFile';

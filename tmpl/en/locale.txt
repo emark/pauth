@@ -1,4 +1,4 @@
-Insert phone number for recieving sms message with registration code. Phone number must be only digits without spaces.
+Insert phone number for recieving sms message with registration code. Phone number must be only digits without spaces. <ul><li><a href="/internet/ru/">Русский</a></li></ul> 
 Sorry, service is unavialable. Updating services prgramm.
 Sorry, please input phone number. Only 10 digits.
 Secondary registration. Press button "Next"

@@ -2,7 +2,7 @@
 
 #Web-authorisation script
 #Source https://github.com/emark/pauth
-#Author E-marketing LLC, http://www.emark.ru, mailbox@emrk.ru
+#Author E-marketing LLC, http://www.emrk.ru, mailbox@emrk.ru
 
 use strict;
 use warnings;

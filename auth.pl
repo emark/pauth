@@ -9,7 +9,7 @@ use warnings;
 use integer;
 use CGI;
 use DBIx::Custom;
-#use Net::ARP;
+use Net::ARP;
 use HTML::Template;
 use YAML::XS 'LoadFile';
 

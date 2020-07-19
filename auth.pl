@@ -9,7 +9,7 @@ use warnings;
 use integer;
 use CGI;
 use DBIx::Custom;
-use Net::ARP;
+#use Net::ARP;
 use HTML::Template;
 use YAML::XS 'LoadFile';
 
@@ -69,6 +69,7 @@ print "Content-Type: text/html\n\n", $tmpl->output;
 
 sub phone_check(){
 	my $phone = $params->{'phone'};
+	$phone=~s/\-//g;
 	return 1 if($phone=~m/^\d{10}$/); #Check for 10 digits in phone number
 
 };

@@ -68,8 +68,8 @@ print "Content-Type: text/html\n\n", $tmpl->output;
 
 
 sub phone_check(){
-	$params->{phone}=~s/\-//g;
 	my $phone = $params->{'phone'};
+	$phone=~s/\-//g;
 	return 1 if($phone=~m/^\d{10}$/); #Check for 10 digits in phone number
 
 };

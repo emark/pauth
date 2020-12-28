@@ -21,8 +21,6 @@ my $dbh = DBIx::Custom->connect(
    option => {mysql_enable_utf8 => 1}
 );
 
-my $p = Net::Ping->new();
-
 &check_ip;
 
 sub check_ip(){
@@ -35,12 +33,12 @@ sub check_ip(){
 	my @stats = (0,0);
 
 	print "Starting to ping hosts...\n";
+	my $p = Net::Ping->new("icmp");
 
 	foreach my $router (@{$routers}){
 		$stats[0] = $stats[0]+1;
 
-		$router->{'status'} = $p->ping($router->{'ip'}) ? 1 : 0;
-		$p->close();
+		$router->{'status'} = $p->ping($router->{'ip'},2) ? 1 : 0;
 		
 		$stats[1] = $stats[1]+$router->{'status'};	
 		print "$stats[0]. Host:\t$router->{'ip'}\tStatus:\t$hu_status[$router->{'status'}]\n";
@@ -53,6 +51,7 @@ sub check_ip(){
 		);
 
 	};
+	$p->close();
 	print "\nTotal: $stats[0]\tOnline: $stats[1]/$stats[0]\n";
 };
 

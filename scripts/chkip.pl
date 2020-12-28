@@ -57,7 +57,7 @@ sub check_ip(){
 
 	};
 	$p->close();
-	print "\nTotal: $stats[0]\tOnline: $stats[1]/$stats[0]\n";
+	print "\nOnline: $stats[1]/$stats[0]\n";
 };
 
 1;

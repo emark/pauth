@@ -32,13 +32,18 @@ sub check_ip(){
 	)->fetch_hash_all;
 	
 	my @hu_status = ('offline','online');
+	my @stats = (0,0);
 
 	print "Starting to ping hosts...\n";
 
 	foreach my $router (@{$routers}){
+		$stats[0] = $stats[0]+1;
+
 		$router->{'status'} = $p->ping($router->{'ip'}) ? 1 : 0;
 		$p->close();
-		print "Host:\t$router->{'ip'}\tStatus:\t$hu_status[$router->{'status'}]\n";
+		
+		$stats[1] = $stats[1]+$router->{'status'};	
+		print "$stats[0]. Host:\t$router->{'ip'}\tStatus:\t$hu_status[$router->{'status'}]\n";
 
 		$dbh->update(
 			$router,
@@ -48,6 +53,7 @@ sub check_ip(){
 		);
 
 	};
+	print "\nTotal: $stats[0]\tOnline: $stats[1]/$stats[0]";
 };
 
 1;

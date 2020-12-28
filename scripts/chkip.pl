@@ -37,7 +37,7 @@ sub check_ip(){
 	coloralias('offline','red');
 
 	print "Starting to ping hosts...\n";
-	my $p = Net::Ping->new("tcp");
+	my $p = Net::Ping->new("icmp");
 
 	foreach my $router (@{$routers}){
 		$stats[0] = $stats[0]+1;

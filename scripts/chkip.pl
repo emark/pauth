@@ -9,6 +9,8 @@ use Net::Ping;
 use DBIx::Custom;
 use FindBin qw($Bin);
 use YAML::XS 'LoadFile';
+use Term::ANSIColor;
+use Term::ANSIColor 4.00 qw(coloralias);
 
 use Data::Dumper;
 
@@ -31,9 +33,11 @@ sub check_ip(){
 	
 	my @hu_status = ('offline','online');
 	my @stats = (0,0);
+	coloralias('online','green');
+	coloralias('offline','red');
 
 	print "Starting to ping hosts...\n";
-	my $p = Net::Ping->new("icmp");
+	my $p = Net::Ping->new("tcp");
 
 	foreach my $router (@{$routers}){
 		$stats[0] = $stats[0]+1;
@@ -41,7 +45,8 @@ sub check_ip(){
 		$router->{'status'} = $p->ping($router->{'ip'},2) ? 1 : 0;
 		
 		$stats[1] = $stats[1]+$router->{'status'};	
-		print "$stats[0]. Host:\t$router->{'ip'}\tStatus:\t$hu_status[$router->{'status'}]\n";
+		print "$stats[0]. Host:\t$router->{'ip'}\tStatus:\t";
+		print colored("$hu_status[$router->{'status'}]",$hu_status[$router->{'status'}]),"\n";
 
 		$dbh->update(
 			$router,

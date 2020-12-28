@@ -53,7 +53,7 @@ sub check_ip(){
 		);
 
 	};
-	print "\nTotal: $stats[0]\tOnline: $stats[1]/$stats[0]";
+	print "\nTotal: $stats[0]\tOnline: $stats[1]/$stats[0]\n";
 };
 
 1;

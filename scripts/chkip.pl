@@ -45,7 +45,7 @@ sub check_ip(){
 		$router->{'status'} = $p->ping($router->{'ip'},2) ? 1 : 0;
 		
 		$stats[1] = $stats[1]+$router->{'status'};	
-		print "$stats[0]. Host:\t$router->{'ip'}\tStatus:\t";
+		print "$stats[0].\t$router->{'ip'}\tStatus:\t";
 		print colored("$hu_status[$router->{'status'}]",$hu_status[$router->{'status'}]),"\n";
 
 		$dbh->update(

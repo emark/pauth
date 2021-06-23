@@ -42,13 +42,14 @@ sub check_ip(){
 	foreach my $router (@{$routers}){
 		$stats[0] = $stats[0]+1;
 
-		my $cur_status = $p->ping($router->{'ip'},2) ? 1 : 0;
+		my $checking_status = $router->{'status'}; #Status for checking with current status
+		$router->{'status'} = $p->ping($router->{'ip'},2) ? 1 : 0;
 		
 		$stats[1] = $stats[1]+$router->{'status'};	
 		print "$stats[0].\t$router->{'ip'}\tStatus:\t";
 		print colored("$hu_status[$router->{'status'}]",$hu_status[$router->{'status'}]),"\n";
 
-		if($cur_status != $router->{'status'}){
+		if($router->{'status'} != $checking_status){
 			$dbh->update(
 				$router,
 				mtime => 'updated',

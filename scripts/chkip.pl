@@ -28,11 +28,11 @@ my $dbh = DBIx::Custom->connect(
 sub check_ip(){
 	my $routers = $dbh->select(
 		table => 'routers',
-		column => ['id','ip'],
+		column => ['id','ip','status'],
 	)->fetch_hash_all;
 	
 	my @hu_status = ('offline','online');
-	my @stats = (0,0);
+	my @stats = (0,0); #Statistic data (All/Online)
 	coloralias('online','green');
 	coloralias('offline','red');
 
@@ -42,19 +42,20 @@ sub check_ip(){
 	foreach my $router (@{$routers}){
 		$stats[0] = $stats[0]+1;
 
-		$router->{'status'} = $p->ping($router->{'ip'},2) ? 1 : 0;
+		$router->{'cur_status'} = $p->ping($router->{'ip'},2) ? 1 : 0;
 		
 		$stats[1] = $stats[1]+$router->{'status'};	
 		print "$stats[0].\t$router->{'ip'}\tStatus:\t";
 		print colored("$hu_status[$router->{'status'}]",$hu_status[$router->{'status'}]),"\n";
 
-		$dbh->update(
-			$router,
-			mtime => 'updated',
-			table => 'routers',
-			where => {id => $router->{'id'}},
-		);
-
+		if($router->{'cur_status'} != $router->{'status'}){
+			$dbh->update(
+				$router,
+				mtime => 'updated',
+				table => 'routers',
+				where => {id => $router->{'id'}},
+			);
+		};
 	};
 	$p->close();
 	print "\nOnline: $stats[1]/$stats[0]\n";

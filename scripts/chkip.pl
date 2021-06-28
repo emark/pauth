@@ -49,7 +49,7 @@ sub check_ip(){
 		print "$stats[0].\t$router->{'ip'}\tStatus:\t";
 		print colored("$hu_status[$router->{'status'}]",$hu_status[$router->{'status'}]),"\n";
 
-		if($router->{'status'} != $checking_status){
+		if($router->{'status'} != $checking_status || $router->{'status'} == 1){
 			$dbh->update(
 				$router,
 				mtime => 'updated',
